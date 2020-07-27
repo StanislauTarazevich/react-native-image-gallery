@@ -48,7 +48,7 @@ export default class ViewPager extends PureComponent {
     activeGesture = false;
     gestureResponder = undefined;
 
-    state = { width, height };
+    state = { width, height, page: 0 };
 
     constructor (props) {
         super(props);
@@ -159,6 +159,7 @@ export default class ViewPager extends PureComponent {
 
     onPageChanged (page) {
         if (this.currentPage !== page) {
+            this.setState({ page })
             this.currentPage = page;
             this.props.onPageSelected && this.props.onPageSelected(page);
         }
@@ -274,7 +275,7 @@ export default class ViewPager extends PureComponent {
         };
         const style = page.props.style ? [page.props.style, layout] : layout;
 
-        let newProps = { ...page.props, ref: page.ref, style };
+        let newProps = { ...page.props, ref: page.ref, style, currentPage: this.state.page };
         const element = React.createElement(page.type, newProps);
 
         if (this.props.pageMargin > 0 && index > 0) {
